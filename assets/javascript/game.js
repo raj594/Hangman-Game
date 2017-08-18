@@ -7,7 +7,7 @@
     var letter = "";
     var newGuess = true;
     var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    var words = ["aa", "eef", "ijk", "mmnop"];
+    var words = ["cowboys", "redskins", "giants", "eagles", "texans", "colts", "jaguars", "titans", "packers", "lions", "bears", "vikings", "ravens", "steelers", "browns", "bengals", "falcons", "saints", "buccaneers", "panthers", "jets", "dolphins", "patriots", "bills", "fourtyniners", "seahawks", "raiders", "chargers", "chiefs", "broncos", "rams", "cardinals"];
     var keyWord = "";
     var blockedWord = "";
     var wordSelected = false;
@@ -23,21 +23,9 @@
         };
       }
 
-      // Makes sure letter hasnt been tried before
-      for (var i = 0; i < wrongGuesses.length; i++) {
-        if ( userGuess === wrongGuesses[i]){
-          newGuess = false;
-        } 
-      }
 
-      // Randomly chooses a word from the words[] array for hangman.
-      if (wordSelected === false){
-        keyWord = words[Math.floor(Math.random() * words.length)];
-        for (var i = keyWord.length - 1; i >= 0; i--) {
-          blockedWord += "_";
-        }
-        wordSelected = true;
-      };
+      checkForDuplicateGuesses(wrongGuesses, userGuess);
+      chooseWord();
 
       // This logic determines the outcome of the game (win/loss), and increments the appropriate number, clears guessed letters, resets guess count.
       if(newGuess) {
@@ -58,14 +46,15 @@
             keyWord = "";
             blockedWord = "";
             wordSelected = false;
+            chooseWord();
         } else if (correctGuess === true && blockedWord.toLowerCase() == keyWord.toLowerCase()) {
             wins++;
             guessCount = 10;
             wrongGuesses = "";
             userGuess = "";
-            keyWord = "";
-            blockedWord = ""
+            blockedWord = "";
             wordSelected = false;
+            chooseWord();
             correctGuess = false;
         } else if (correctGuess === true) {
             correctGuess = false;
@@ -76,17 +65,42 @@
 
         // Creating a variable to hold our new HTML. Our HTML now keeps track of the user and computer guesses, and wins/losses/ties.
         var html =
-          "<h1>Hangman</h1>" +
+          "<h1>NFL Hangman</h1>" +
           "<p>Press any key to get started!</p>" +
           "<p>Wins: " + wins + "</p>" +
-          "<p>Current Word: " + blockedWord + "</p>" +
+          "<p>Current Word: " + blockedWord.split('').join(' ') + "</p>" +
           "<p>Guesses Left: " + guessCount + "</p>" +
-          "<p>Letters already guessed: " + wrongGuesses + "</p>" +
-          "<p>" + keyWord + "</p>" +
-          "<p>" + letter + "</p>"+
-          "<p>" + userGuess + "</p>";
+          "<p>Letters already guessed: " + wrongGuesses + "</p>";
 
         // Set the inner HTML contents of the #game div to our html string
         document.querySelector("#game").innerHTML = html;
       
     };
+
+function checkForDuplicateGuesses(wrong, guess) {
+
+      // Makes sure letter hasnt been tried before
+      for (var i = 0; i < wrong.length; i++) {
+        if (guess === wrong[i]){
+          newGuess = false;
+        } 
+      };
+};
+function chooseWord() {
+      // Randomly chooses a word from the words[] array for hangman.
+      if (wordSelected === false){
+        keyWord = words[Math.floor(Math.random() * words.length)];
+        for (var i = keyWord.length - 1; i >= 0; i--) {
+          blockedWord += "_";
+        }
+        wordSelected = true;
+      };
+};
+
+
+
+function retrieveUserGuess() {
+
+
+};
+
