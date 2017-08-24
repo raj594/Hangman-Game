@@ -21,6 +21,9 @@
         if (event.key === letters[i]) {
           var userGuess = event.key;
         };
+        if (event.key.toLowerCase() === letters[i]) {
+          var userGuess = event.key.toLowerCase();
+        };
       }
 
 
